@@ -35,7 +35,7 @@
 
 <br>
 
-Generate custom template code for PyTorch & sklearn, using a simple web UI built with [streamlit](https://www.streamlit.io/). traingenerator offers multiple options for preprocessing, model setup, training, and visualization (using Tensorboard or comet.ml). It exports to .py, Jupyter Notebook, or  [Google Colab](https://colab.research.google.com/). The perfect tool to jumpstart your next machine learning project! ✨
+Generate custom template code for PyTorch & sklearn, using a simple web UI built with [streamlit](https://www.streamlit.io/). traingenerator offers multiple options for preprocessing, model setup, training, and visualization (using Tensorboard or comet.ml). It exports to .py, Jupyter Notebook, [Google Colab](https://colab.research.google.com/), or [Paperspace Gradient](https://gradient.paperspace.com/). The perfect tool to jumpstart your next machine learning project! ✨
 
 <br>
 
@@ -53,8 +53,8 @@ cd traingenerator
 pip install -r requirements.txt
 ```
 
-*Optional: For the "Open in Colab" button to work you need to set up a Github repo 
-where the notebook files can be stored (Colab can only open public files if 
+*Optional: For the "Open in Colab" and "Open in Gradient" buttons to work you need to set up a Github repo 
+where the notebook files can be stored (Colab and Gradient can only open public files if 
 they are on Github). After setting up the repo, create a file `.env` with content:*
 
 ```bash
@@ -62,7 +62,7 @@ GITHUB_TOKEN=<your-github-access-token>
 REPO_NAME=<user/notebooks-repo>
 ```
 
-*If you don't set this up, the app will still work but the "Open in Colab" button 
+*If you don't set this up, the app will still work but the "Open in Colab" and "Open in Gradient" buttons 
 will only show an error message.*
 
 
@@ -92,7 +92,7 @@ To update the deployed app, commit your changes and run:
 git push heroku main
 ```
 
-*Optional: If you set up a Github repo to enable the "Open in Colab" button (see above),
+*Optional: If you set up a Github repo to enable the "Open in Colab" or "Open in Gradient" buttons (see above),
 you also need to run:*
 
 ```
