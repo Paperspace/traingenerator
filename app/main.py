@@ -24,12 +24,13 @@ st.set_page_config(
 )
 
 
-# Set up github access for "Open in Colab" button.
+# Set up github access for "Open in Colab" and "Open in Gradient" buttons.
 load_dotenv()  # load environment variables from .env file
 if os.getenv("GITHUB_TOKEN") and os.getenv("REPO_NAME"):
     g = Github(os.getenv("GITHUB_TOKEN"))
     repo = g.get_repo(os.getenv("REPO_NAME"))
     colab_enabled = True
+    gradient_enabled = True
 
     def add_to_colab(notebook):
         """Adds notebook to Colab by pushing it to Github repo and returning Colab link."""
@@ -42,9 +43,21 @@ if os.getenv("GITHUB_TOKEN") and os.getenv("REPO_NAME"):
         colab_link = f"http://colab.research.google.com/github/{os.getenv('REPO_NAME')}/blob/main/notebooks/{notebook_id}/generated-notebook.ipynb"
         return colab_link
 
+    def add_to_gradient(notebook):
+        """Adds notebook to Colab by pushing it to Github repo and returning Colab link."""
+        notebook_id = str(uuid.uuid4())
+        repo.create_file(
+            f"notebooks/{notebook_id}/generated-notebook.ipynb",
+            f"Added notebook {notebook_id}",
+            notebook,
+        )
+        gradient_link = f"http://console.paperspace.com/github/{os.getenv('REPO_NAME')}/blob/main/notebooks/{notebook_id}/generated-notebook.ipynb"
+        return gradient_link
+
 
 else:
     colab_enabled = False
+    gradient_enabled = False
 
 
 # Display header.
@@ -88,6 +101,7 @@ if inputs["task"] == "Image classification":
     st.write("")  # add vertical space
     col1, col2, col3 = st.beta_columns(3)
     open_colab = col1.button("🚀 Open in Colab")  # logic handled further down
+    open_gradient = col1.button("🚀 Open in Gradient")  # logic handled further down
     with col2:
         utils.download_button(code, "generated-code.py", "🐍 Download (.py)")
     with col3:
@@ -102,6 +116,18 @@ if inputs["task"] == "Image classification":
 
     # Handle "Open Colab" button. Down here because to open the new web page, it
     # needs to create a temporary element, which we don't want to show above.
+    
+    if open_gradient:
+        if gradient_enabled:
+            gradient_link = add_to_gradient(notebook)
+            utils.open_link(gradient_link)
+        else:
+            colab_error.error(
+                """
+                **Gradient support is disabled.** (If you are hosting this: Create a Github 
+                repo to store notebooks and register it via a .env file)
+                """
+            )
     if open_colab:
         if colab_enabled:
             colab_link = add_to_colab(notebook)
